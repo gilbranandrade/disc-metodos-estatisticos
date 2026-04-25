@@ -44,6 +44,24 @@ alunosProgramacao <- alunosProgramacao %>%
     grupo = NA_character_
   )
 
+### Respostas extremas
+## Comentário CMD SHIFT C
+# dados <- dados %>%
+#   mutate(
+#     comunicacao = case_when(
+#       comunicacao %in% c(1, 2) ~ 1,
+#       comunicacao %in% c(3, 4) ~ 4
+#     ),
+#     escrita = case_when(
+#       escrita %in% c(1, 2) ~ 1,
+#       escrita %in% c(3, 4) ~ 4
+#     ),
+#     lideranca = case_when(
+#       lideranca %in% c(1, 2) ~ 1,
+#       lideranca %in% c(3, 4) ~ 4
+#     ),
+#   )
+
 ##########################################
 ############## Definição de funções
 ##########################################
@@ -78,9 +96,9 @@ divisao_grupos <- function(dados) {
 ############## Main
 ##########################################
 
-set.seed(as.integer(Sys.time())) # as.integer(Sys.time()) - 1777121756
+set.seed(as.integer(Sys.time())) # as.integer(Sys.time()) - 1777121756 - 1777138940
 
-n_iteracoes <- 1000
+n_iteracoes <- 100000
 # 1000 - 1s
 # 10000 - 12s
 # 100000 - 2min
