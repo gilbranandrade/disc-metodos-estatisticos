@@ -45,7 +45,6 @@ alunosProgramacao <- alunosProgramacao %>%
   )
 
 ### Respostas extremas
-## Comentário CMD SHIFT C
 # dados <- dados %>%
 #   mutate(
 #     comunicacao = case_when(
@@ -66,6 +65,10 @@ alunosProgramacao <- alunosProgramacao %>%
 ############## Definição de funções
 ##########################################
 
+var_pop <- function(coluna) {
+  return(mean((coluna - mean(coluna))^2))
+}
+
 desequilibrio <- function(dados) {
   resumo <- dados %>%
     group_by(grupo) %>%
@@ -77,7 +80,7 @@ desequilibrio <- function(dados) {
     )
   
   # função objetivo do problema de otimização de minimização
-  d <- var(resumo$soma_comunicacao) + var(resumo$soma_escrita) + var(resumo$soma_lideranca)
+  d <- var_pop(resumo$soma_comunicacao) + var_pop(resumo$soma_escrita) + var_pop(resumo$soma_lideranca)
   
   return(d)
 }
@@ -96,9 +99,9 @@ divisao_grupos <- function(dados) {
 ############## Main
 ##########################################
 
-set.seed(as.integer(Sys.time())) # as.integer(Sys.time()) - 1777121756 - 1777138940
+set.seed(1777121756) # as.integer(Sys.time()) - 1777121756 - 1777138940
 
-n_iteracoes <- 100000
+n_iteracoes <- 1000
 # 1000 - 1s
 # 10000 - 12s
 # 100000 - 2min
@@ -162,16 +165,14 @@ sera_equilibrado %>%
   gt()
 
 ## Variância
-funcao_objetivo <- sera_equilibrado %>%
+sera_equilibrado %>%
   summarise(
-    variancia_comunicacao = var(soma_comunicacao),
-    variancia_escrita = var(soma_escrita),
-    variancia_lideranca = var(soma_lideranca),
-    
-    desequilibrio = variancia_comunicacao + variancia_escrita + variancia_lideranca
-  )
+    variancia_comunicacao = var_pop(soma_comunicacao),
+    variancia_escrita = var_pop(soma_escrita),
+    variancia_lideranca = var_pop(soma_lideranca),
 
-funcao_objetivo %>%
+    desequilibrio = variancia_comunicacao + variancia_escrita + variancia_lideranca
+  ) %>%
   mutate(
     desequilibrio = round(desequilibrio, 2),
     variancia_comunicacao = round(variancia_comunicacao, 2),
