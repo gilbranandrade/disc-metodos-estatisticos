@@ -101,7 +101,7 @@ divisao_grupos <- function(tabela) {
 ############## Main
 ##########################################
 
-set.seed(as.integer(Sys.time())) # as.integer(Sys.time()) - 1777138940
+set.seed(as.integer(Sys.time())) # as.integer(Sys.time())
 
 n_iteracoes <- 1000
 # 1000 - 1s
