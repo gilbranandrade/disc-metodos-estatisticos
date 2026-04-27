@@ -1,3 +1,4 @@
+# as.integer(Sys.time()) - 1777121756 - 1777138940
 ##########################################
 ############## Pacotes e configurações
 ##########################################
@@ -9,8 +10,9 @@ library(gt) # tabela
 ############## Leitura dos dados
 ##########################################
 
-setwd("/Users/gilbranandrade/SourceCodes/disc-metodos-estatisticos/atv-separacao-dos-grupos")
-getwd() 
+# Se abrir apenas o arquivo R, deve-se indicar qual o diretório de trabalho
+# setwd("C:\tarara")
+# getwd() 
 
 alunos <- read.csv2("./perfil_turma.csv")
 
@@ -45,21 +47,21 @@ alunosProgramacao <- alunosProgramacao %>%
   )
 
 ### Respostas extremas
-# alunos <- alunos %>%
-#   mutate(
-#     comunicacao = case_when(
-#       comunicacao %in% c(1, 2) ~ 1,
-#       comunicacao %in% c(3, 4) ~ 4
-#     ),
-#     escrita = case_when(
-#       escrita %in% c(1, 2) ~ 1,
-#       escrita %in% c(3, 4) ~ 4
-#     ),
-#     lideranca = case_when(
-#       lideranca %in% c(1, 2) ~ 1,
-#       lideranca %in% c(3, 4) ~ 4
-#     ),
-#   )
+alunos <- alunos %>%
+  mutate(
+    comunicacao = case_when(
+      comunicacao %in% c(1, 2) ~ 1,
+      comunicacao %in% c(3, 4) ~ 4
+    ),
+    escrita = case_when(
+      escrita %in% c(1, 2) ~ 1,
+      escrita %in% c(3, 4) ~ 4
+    ),
+    lideranca = case_when(
+      lideranca %in% c(1, 2) ~ 1,
+      lideranca %in% c(3, 4) ~ 4
+    ),
+  )
 
 ##########################################
 ############## Definição de funções
@@ -79,7 +81,7 @@ desequilibrio <- function(tabela) {
       .groups = "drop"
     )
   
-  # função objetivo do problema de otimização de minimização
+  # função objetivo de minimizacao
   d <- var_pop(resumo$soma_comunicacao) + var_pop(resumo$soma_escrita) + var_pop(resumo$soma_lideranca)
   
   return(d)
@@ -99,7 +101,7 @@ divisao_grupos <- function(tabela) {
 ############## Main
 ##########################################
 
-set.seed(1777121756) # as.integer(Sys.time()) - 1777121756 - 1777138940
+set.seed(as.integer(Sys.time())) # as.integer(Sys.time()) - 1777138940
 
 n_iteracoes <- 1000
 # 1000 - 1s
