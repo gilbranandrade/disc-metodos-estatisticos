@@ -12,28 +12,28 @@ library(gt) # tabela
 setwd("/Users/gilbranandrade/SourceCodes/disc-metodos-estatisticos/atv-separacao-dos-grupos")
 getwd() 
 
-dados <- read.csv2("./perfil_turma.csv")
+alunos <- read.csv2("./perfil_turma.csv")
 
 alunosProgramacao <- data.frame(
   nome = c("Eduardo Medeiros", "Gilbran Andrade", "Yuri Henrique")
 )
 
-glimpse(dados)
+glimpse(alunos)
 glimpse(alunosProgramacao)
 
-head(dados, 5)
+head(alunos, 5)
 head(alunosProgramacao)
 
 ##########################################
 ############## Organizacao das colunas
 ##########################################
 
-dados <- dados %>%
+alunos <- alunos %>%
   select(-Timestamp)
 
-colnames(dados) <- c("nome", "comunicacao", "escrita", "lideranca")
+colnames(alunos) <- c("nome", "comunicacao", "escrita", "lideranca")
 
-dados <- dados %>%
+alunos <- alunos %>%
   mutate(grupo = NA_character_)
 
 alunosProgramacao <- alunosProgramacao %>%
@@ -45,7 +45,7 @@ alunosProgramacao <- alunosProgramacao %>%
   )
 
 ### Respostas extremas
-# dados <- dados %>%
+# alunos <- alunos %>%
 #   mutate(
 #     comunicacao = case_when(
 #       comunicacao %in% c(1, 2) ~ 1,
@@ -69,8 +69,8 @@ var_pop <- function(coluna) {
   return(mean((coluna - mean(coluna))^2))
 }
 
-desequilibrio <- function(dados) {
-  resumo <- dados %>%
+desequilibrio <- function(tabela) {
+  resumo <- tabela %>%
     group_by(grupo) %>%
     summarise(
       soma_comunicacao = sum(comunicacao),
@@ -85,11 +85,11 @@ desequilibrio <- function(dados) {
   return(d)
 }
 
-divisao_grupos <- function(dados) {
-  grupos_pelasorte <- dados %>%
-    slice_sample(n = nrow(dados)) %>%
+divisao_grupos <- function(tabela) {
+  grupos_pelasorte <- tabela %>%
+    slice_sample(n = nrow(tabela)) %>%
     mutate(
-      grupo = rep(c("Grupo 1", "Grupo 2", "Grupo 3"), length.out = nrow(dados))
+      grupo = rep(c("Grupo 1", "Grupo 2", "Grupo 3"), length.out = nrow(tabela))
     )
   
   return(grupos_pelasorte)
@@ -111,7 +111,7 @@ melhor_desequilibrio <- Inf
 melhor_divisao <- NULL
 
 for (i in 1:n_iteracoes) {
-  divisao_atual <- divisao_grupos(dados)
+  divisao_atual <- divisao_grupos(alunos)
   
   desequilibrio_atual <- desequilibrio(divisao_atual)
   
