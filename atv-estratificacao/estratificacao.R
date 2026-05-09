@@ -31,7 +31,7 @@ dados <- dados %>%
       area <= 2 ~ "A",
       area > 2 & area <= 4 ~ "B",
       area > 4 & area <= 8 ~ "C",
-      area > 4 & area <= 12 ~ "D",
+      area > 8 & area <= 12 ~ "D",
       area > 12 ~ "E"
     )
   )
