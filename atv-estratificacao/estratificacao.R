@@ -13,6 +13,11 @@ dados <- tibble(
            2, 5, 8, 5, 8, 4, 12, 16, 3, 5, 16, 3, 6, 18, 4, 6, 9, 12)
 )
 
+dados %>%
+  count(area)
+
+soma <- sum(dados$area)
+
 set.seed(as.integer(Sys.time()))
 n_iteracoes <- 100
 
@@ -82,7 +87,7 @@ ggplot(dados_plot, aes(x = estrato, y = area)) +
 ################################################
 ### Gráfico de Dispersão
 ################################################
-divisao_grupos <- function(tabela, mediaReal, desvioReal, cartesiano, n) {
+dispersao <- function(tabela, mediaReal, desvioReal, cartesiano, n) {
   if (n == 5){
     titulo = "n=5 - Dispersão das médias das áreas x desvio padrão"
   }
@@ -160,7 +165,7 @@ divisao_grupos <- function(tabela, mediaReal, desvioReal, cartesiano, n) {
 }
 
 ################################################
-### Cálculo por amostragem n=10
+### Cálculo por amostragem
 ################################################
 calculoAmostragem <- function(tabela, tamN) {
   if (tamN == 5){
@@ -182,7 +187,7 @@ calculoAmostragem <- function(tabela, tamN) {
       media = mean(aae$area),
       desvio_padrao = sd(aae$area),
       n = length(aae$area)
-    ) 
+    )
   }
 
   aae <- bind_rows(calculos)
@@ -197,11 +202,8 @@ calculoAmostragem <- function(tabela, tamN) {
 aae_n5 <- calculoAmostragem(dados, 5)
 aae_n10 <- calculoAmostragem(dados, 10)
 
-divisao_grupos(aae_n5, mediaReal, desvioReal, 0, 5)
-divisao_grupos(aae_n5, mediaReal, desvioReal, 1, 5)
-divisao_grupos(aae_n10, mediaReal, desvioReal, 0, 10)
-divisao_grupos(aae_n10, mediaReal, desvioReal, 1, 10)
-
-
-
+dispersao(aae_n5, mediaReal, desvioReal, 0, 5)
+dispersao(aae_n5, mediaReal, desvioReal, 1, 5)
+dispersao(aae_n10, mediaReal, desvioReal, 0, 10)
+dispersao(aae_n10, mediaReal, desvioReal, 1, 10)
 
