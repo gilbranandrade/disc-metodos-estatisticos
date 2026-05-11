@@ -198,8 +198,6 @@ calculoAmostragem <- function(tabela, tamN) {
       desvio_padrao = sd(aae$area),
       n = length(aae$area)
     )
-    
-    print(calculos[[i]])
   }
 
   aae <- bind_rows(calculos)
