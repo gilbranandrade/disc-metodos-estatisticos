@@ -19,8 +19,6 @@ dados %>%
 soma <- sum(dados$area)
 
 set.seed(as.integer(Sys.time()))
-n_iteracoes <- 100
-
 
 ################################################
 ### Categorização dos dados
@@ -168,6 +166,8 @@ dispersao <- function(tabela, mediaReal, desvioReal, cartesiano, n) {
 ### Cálculo por amostragem
 ################################################
 calculoAmostragem <- function(tabela, tamN) {
+  n_iteracoes <- 100
+  
   if (tamN == 5){
     fatia = 1
   }
@@ -177,17 +177,29 @@ calculoAmostragem <- function(tabela, tamN) {
   
   calculos <- list()
   
+  pesos_estrato <- tibble(
+    estrato = c("A", "B", "C", "D", "E"),
+    num_elementos = c(18, 22, 22, 22, 16)
+  )
+  
   for (i in 1:n_iteracoes) {
     aae <- tabela %>%
       group_by(estrato) %>%
       slice_sample(n=fatia) %>%
       ungroup()
     
+    dados_pond <- aae %>%
+      left_join(pesos_estrato, by = "estrato")
+    
     calculos[[i]] <- tibble(
-      media = mean(aae$area),
+      dados_pond %>%
+        summarise(media = sum(area * num_elementos) / sum(num_elementos)) %>%
+        select(media),
       desvio_padrao = sd(aae$area),
       n = length(aae$area)
     )
+    
+    print(calculos[[i]])
   }
 
   aae <- bind_rows(calculos)
@@ -201,6 +213,13 @@ calculoAmostragem <- function(tabela, tamN) {
 
 aae_n5 <- calculoAmostragem(dados, 5)
 aae_n10 <- calculoAmostragem(dados, 10)
+
+min(aae_n5$media)
+max(aae_n5$media)
+min(aae_n5$desvio_padrao)
+max(aae_n5$desvio_padrao)
+sd(aae_n5$media)
+sd(aae_n10$media)
 
 dispersao(aae_n5, mediaReal, desvioReal, 0, 5)
 dispersao(aae_n5, mediaReal, desvioReal, 1, 5)
